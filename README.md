@@ -7,6 +7,15 @@
 [![Vercel deployment](https://flat.badgen.net/badge/vercel/auto-deployment/21c4dd?icon=now)](https://vercel.com/oceanprotocol/market)
 [![js oceanprotocol](https://img.shields.io/badge/js-oceanprotocol-7b1173.svg)](https://github.com/oceanprotocol/eslint-config-oceanprotocol)
 
+```ts
+interface MarketStatsResponse {
+  datasets: number // total number of published datasets
+  owners: number // total number of different owner accounts
+  ocean: number // total number of pooled OCEAN
+  datatoken: number // total number of pooled Datatokens
+}
+```
+
 ## ⬆️ Deployment
 
 Every branch or Pull Request is automatically deployed by [Vercel](https://vercel.com) with their GitHub integration. A link to a deployment will appear under each Pull Request.

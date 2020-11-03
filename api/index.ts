@@ -4,9 +4,9 @@ import { DDO } from '@oceanprotocol/lib'
 
 export interface MarketStatsResponse {
   datasets: number
+  owners: number
   ocean: number
   datatoken: number
-  owners: number
 }
 
 export default async (req: NowRequest, res: NowResponse) => {
@@ -39,9 +39,9 @@ export default async (req: NowRequest, res: NowResponse) => {
 
   const result: MarketStatsResponse = {
     datasets: ddosArray.length,
+    owners: totalOwners.length,
     ocean: totalOcean,
-    datatoken: totalDatatoken,
-    owners: totalOwners.length
+    datatoken: totalDatatoken
   }
 
   res.status(200).send(result)
