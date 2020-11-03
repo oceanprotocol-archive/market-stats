@@ -6,6 +6,7 @@ export interface MarketStatsResponse {
   datasets: {
     pools: number
     exchange: number
+    none: number
     total: number
   }
   owners: number
@@ -28,26 +29,25 @@ export default async (req: NowRequest, res: NowResponse) => {
 
   let totalOcean = 0
   let totalDatatoken = 0
-  let totalOwners = []
+  let owners = []
 
   ddosArray.forEach((ddo) => {
     const { ocean, datatoken } = ddo.price
-    if (!ocean) return
-    totalOcean += ocean
-    if (!datatoken) return
-    totalDatatoken += datatoken
+    ocean && (totalOcean += ocean)
+    datatoken && (totalDatatoken += datatoken)
 
     const { owner } = ddo.publicKey[0]
-    owner && totalOwners.push(owner)
+    owner && owners.push(owner)
   })
 
   const result: MarketStatsResponse = {
     datasets: {
       pools: ddosArray.filter((ddo) => ddo.price.type === 'pool').length,
       exchange: ddosArray.filter((ddo) => ddo.price.type === 'exchange').length,
+      none: ddosArray.filter((ddo) => ddo.price.type === '').length,
       total: ddosArray.length
     },
-    owners: totalOwners.length,
+    owners: owners.length,
     ocean: totalOcean,
     datatoken: totalDatatoken
   }
