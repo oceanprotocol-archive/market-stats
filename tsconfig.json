@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["dom", "es2017"],
+    "moduleResolution": "Node",
+    "noEmit": true,
+    "sourceMap": true,
+    "strict": true
+  },
+  "include": ["./api"]
+}
