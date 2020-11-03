@@ -6,6 +6,7 @@ export interface MarketStatsResponse {
   datasets: number
   ocean: number
   datatoken: number
+  owners: number
 }
 
 export default async (req: NowRequest, res: NowResponse) => {
@@ -23,6 +24,7 @@ export default async (req: NowRequest, res: NowResponse) => {
 
   let totalOcean = 0
   let totalDatatoken = 0
+  let totalOwners = []
 
   ddosArray.forEach((ddo) => {
     const { ocean, datatoken } = ddo.price
@@ -30,12 +32,16 @@ export default async (req: NowRequest, res: NowResponse) => {
     totalOcean += ocean
     if (!datatoken) return
     totalDatatoken += datatoken
+
+    const { owner } = ddo.publicKey[0]
+    owner && totalOwners.push(owner)
   })
 
-  const result = {
+  const result: MarketStatsResponse = {
     datasets: ddosArray.length,
     ocean: totalOcean,
-    datatoken: totalDatatoken
+    datatoken: totalDatatoken,
+    owners: totalOwners.length
   }
 
   res.status(200).send(result)
