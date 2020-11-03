@@ -16,6 +16,8 @@ interface MarketStatsResponse {
 }
 ```
 
+Deployed under https://market-stats.oceanprotocol.com
+
 ## ⬆️ Deployment
 
 Every branch or Pull Request is automatically deployed by [Vercel](https://vercel.com) with their GitHub integration. A link to a deployment will appear under each Pull Request.
