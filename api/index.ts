@@ -3,7 +3,11 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { DDO } from '@oceanprotocol/lib'
 
 export interface MarketStatsResponse {
-  datasets: number
+  datasets: {
+    pools: number
+    exchange: number
+    total: number
+  }
   owners: number
   ocean: number
   datatoken: number
@@ -38,7 +42,11 @@ export default async (req: NowRequest, res: NowResponse) => {
   })
 
   const result: MarketStatsResponse = {
-    datasets: ddosArray.length,
+    datasets: {
+      pools: ddosArray.filter((ddo) => ddo.price.type === 'pool').length,
+      exchange: ddosArray.filter((ddo) => ddo.price.type === 'exchange').length,
+      total: ddosArray.length
+    },
     owners: totalOwners.length,
     ocean: totalOcean,
     datatoken: totalDatatoken
