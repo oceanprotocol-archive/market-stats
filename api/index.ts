@@ -33,8 +33,11 @@ export default async (req: NowRequest, res: NowResponse) => {
 
   ddosArray.forEach((ddo) => {
     const { ocean, datatoken } = ddo.price
-    ocean && (totalOcean += ocean)
-    datatoken && (totalDatatoken += datatoken)
+    if (!ocean) return
+    totalOcean += ocean
+
+    if (!datatoken) return
+    totalDatatoken += datatoken
 
     const { owner } = ddo.publicKey[0]
     owner && owners.push(owner)
