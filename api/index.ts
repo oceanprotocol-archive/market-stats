@@ -17,7 +17,6 @@ export interface MarketStatsResponse {
 export default async (req: NowRequest, res: NowResponse) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')
-  res.setHeader('Cache-Control', 'max-age=0, s-maxage=86400')
 
   const response = await fetch(
     'https://aquarius.mainnet.oceanprotocol.com/api/v1/aquarius/assets/ddo'
