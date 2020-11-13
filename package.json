@@ -10,7 +10,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@oceanprotocol/lib": "^0.9.9",
+    "@oceanprotocol/lib": "^0.9.12",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
