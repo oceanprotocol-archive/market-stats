@@ -23,8 +23,13 @@ export default async (req: NowRequest, res: NowResponse) => {
   )
   const ddos = await response.json()
 
-  // transform Aquarius weird object of objects to array of objects
-  const ddosArray = Object.entries(ddos).map((e) => e[1] as DDO)
+  // Transform Aquarius weird object of objects to array of objects
+  const ddosArrayWithPurgatory = Object.entries(ddos).map((e) => e[1] as DDO)
+
+  // Filter out purgatory assets for all following actions
+  const ddosArray = ddosArrayWithPurgatory.filter(
+    (ddo: DDO) => ddo.isInPurgatory === 'false'
+  )
 
   const totalPools = ddosArray.filter((ddo) => ddo.price.type === 'pool').length
   const totalExchanges = ddosArray.filter(
@@ -34,11 +39,11 @@ export default async (req: NowRequest, res: NowResponse) => {
 
   let totalOcean = 0
   let totalDatatoken = 0
-  let allOwners: string[] = []
+  const allOwners: string[] = []
 
-  ddosArray.forEach((ddo) => {
-    const { owner } = ddo.publicKey[0]
-    allOwners.push(owner)
+  for (let i = 0; i < ddosArray.length; i++) {
+    const ddo = ddosArray[i]
+    allOwners.push(ddo.publicKey[0].owner)
 
     const { ocean, datatoken } = ddo.price
 
@@ -49,7 +54,7 @@ export default async (req: NowRequest, res: NowResponse) => {
     if (datatoken) {
       totalDatatoken += datatoken
     }
-  })
+  }
 
   const result: MarketStatsResponse = {
     datasets: {
