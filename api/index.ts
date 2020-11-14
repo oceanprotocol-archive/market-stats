@@ -39,7 +39,7 @@ export default async (req: NowRequest, res: NowResponse) => {
 
   let totalOcean = 0
   let totalDatatoken = 0
-  let allOwners: string[] = []
+  const allOwners: string[] = []
 
   for (let i = 0; i < ddosArray.length; i++) {
     const ddo = ddosArray[i]

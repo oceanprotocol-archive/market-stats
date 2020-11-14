@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vercel dev",
     "test": "npm run lint && npm run type-check",
-    "lint": "eslint --ignore-path .gitignore --ext .js,.jsx .",
+    "lint": "eslint --ignore-path .gitignore --ext .ts .",
     "type-check": "tsc --noEmit"
   },
   "author": "",
@@ -23,7 +23,8 @@
     "eslint": "^7.12.1",
     "eslint-config-oceanprotocol": "^1.5.0",
     "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-node": "^11.1.0"
+    "prettier": "^2.1.2"
   }
 }
