@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import { NowRequest, NowResponse } from '@vercel/node'
-import { DDO } from '@oceanprotocol/lib'
+import { QueryResult } from '@oceanprotocol/lib/dist/node/metadatacache/MetadataCache'
 
 export interface MarketStatsResponse {
   datasets: {
@@ -14,61 +14,86 @@ export interface MarketStatsResponse {
   datatoken: number
 }
 
-export default async (req: NowRequest, res: NowResponse) => {
+const queryAllDdos = {
+  page: 1,
+  offset: 10000,
+  query: {
+    nativeSearch: 1,
+    query_string: {
+      query: `-isInPurgatory:true`
+    }
+  },
+  sort: { created: -1 }
+}
+
+export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')
+  res.setHeader('Content-Type', 'application/json;charset=utf-8')
   res.setHeader('Cache-Control', 'max-age=0, s-maxage=600')
 
-  const response = await fetch(
-    'https://aquarius.mainnet.oceanprotocol.com/api/v1/aquarius/assets/ddo'
-  )
-  const ddos = await response.json()
+  try {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify(queryAllDdos)
+    }
+    const response = await fetch(
+      'https://aquarius.mainnet.oceanprotocol.com/api/v1/aquarius/assets/ddo/query',
+      options
+    )
 
-  // Transform Aquarius weird object of objects to array of objects
-  const ddosArrayWithPurgatory = Object.entries(ddos).map((e) => e[1] as DDO)
-
-  // Filter out purgatory assets for all following actions
-  const ddosArray = ddosArrayWithPurgatory.filter(
-    (ddo: DDO) => ddo.isInPurgatory === 'false'
-  )
-
-  const totalPools = ddosArray.filter((ddo) => ddo.price.type === 'pool').length
-  const totalExchanges = ddosArray.filter(
-    (ddo) => ddo.price.type === 'exchange'
-  ).length
-  const totalNone = ddosArray.filter((ddo) => ddo.price.type === '').length
-
-  let totalOcean = 0
-  let totalDatatoken = 0
-  const allOwners: string[] = []
-
-  for (let i = 0; i < ddosArray.length; i++) {
-    const ddo = ddosArray[i]
-    allOwners.push(ddo.publicKey[0].owner)
-
-    const { ocean, datatoken } = ddo.price
-
-    if (ocean) {
-      totalOcean += ocean
+    if (!response || !response.ok || response.status !== 200) {
+      res
+        .status(response.status || 500)
+        .send(`Error from Aquarius: ${response.statusText}`)
+      return
     }
 
-    if (datatoken) {
-      totalDatatoken += datatoken
+    const responseJson: QueryResult = await response.json()
+    const allAssets = responseJson.results
+
+    const totalPools = allAssets.filter((ddo) => ddo.price.type === 'pool')
+      .length
+    const totalExchanges = allAssets.filter(
+      (ddo) => ddo.price.type === 'exchange'
+    ).length
+    const totalNone = allAssets.filter((ddo) => ddo.price.type === '').length
+
+    let totalOcean = 0
+    let totalDatatoken = 0
+    const allOwners: string[] = []
+
+    for (let i = 0; i < allAssets.length; i++) {
+      const ddo = allAssets[i]
+      allOwners.push(ddo.publicKey[0].owner)
+
+      const { ocean, datatoken } = ddo.price
+
+      if (ocean) {
+        totalOcean += ocean
+      }
+
+      if (datatoken) {
+        totalDatatoken += datatoken
+      }
     }
-  }
 
-  const result: MarketStatsResponse = {
-    datasets: {
-      pools: totalPools,
-      exchanges: totalExchanges,
-      none: totalNone,
-      total: ddosArray.length
-    },
-    // Convert to Set to strip duplicates from allOwners
-    owners: [...new Set(allOwners)].length,
-    ocean: totalOcean,
-    datatoken: totalDatatoken
-  }
+    const result: MarketStatsResponse = {
+      datasets: {
+        pools: totalPools,
+        exchanges: totalExchanges,
+        none: totalNone,
+        total: allAssets.length
+      },
+      // Convert to Set to strip duplicates from allOwners
+      owners: [...new Set(allOwners)].length,
+      ocean: totalOcean,
+      datatoken: totalDatatoken
+    }
 
-  res.status(200).send(result)
+    res.status(200).send(result)
+  } catch (error) {
+    res.status(500).send(error)
+  }
 }
