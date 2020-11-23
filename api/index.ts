@@ -30,7 +30,7 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')
   res.setHeader('Content-Type', 'application/json;charset=utf-8')
-  res.setHeader('Cache-Control', 'max-age=0, s-maxage=600')
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate')
 
   try {
     const options = {
