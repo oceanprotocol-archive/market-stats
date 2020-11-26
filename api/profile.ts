@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 import { NowRequest, NowResponse } from '@vercel/node'
 
 //
-// Proxy for 3Box API, returning `200` in most cases.
+// Proxy for 3Box API, returning `200` in most cases and with silent errors.
 // See https://github.com/oceanprotocol/market/pull/264#discussion_r530434946
 //
 // https://docs.3box.io/api/rest-api
@@ -20,13 +20,15 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       `${apiUri}/profile?address=${req.query.address}`
     )
 
+    // upon 404, fail silently and return
     if (!response || !response.ok || response.status !== 200) {
-      res.status(200).send({ status: 'error' })
+      res.status(200).json({ status: 'error' })
+      return
     }
 
     const responseJson = await response.json()
     res.status(200).send(responseJson)
   } catch (error) {
-    res.status(500).send({ status: 'error' })
+    res.status(200).json({ status: 'error' })
   }
 }
