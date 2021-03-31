@@ -1,3 +1,40 @@
 {
-  "routes": [{ "src": "/", "dest": "/api" }]
+  "routes": [
+    { 
+      "src": "/", 
+      "dest": "/api" 
+    },
+    {
+      "src": "/page-views",
+      "dest": "/api/netlify-analytics/page-views.ts"
+    },
+    {
+      "src": "/visitors",
+      "dest": "/api/netlify-analytics/unique-visitors.ts"
+    },
+    {
+      "src": "/locations",
+      "dest": "/api/netlify-analytics/top-locations.ts"
+    },
+    {
+      "src": "/pages",
+      "dest": "/api/netlify-analytics/top-pages.ts"
+    },
+    {
+      "src": "/sources",
+      "dest": "/api/netlify-analytics/top-sources.ts"
+    },
+    {
+      "src": "/not-found-sources",
+      "dest": "/api/netlify-analytics/not-found-sources.ts"
+    },
+    {
+      "src": "/bandwidth",
+      "dest": "/api/netlify-analytics/used-bandwidth.ts"
+    },
+    {
+      "src": "/top-analytics",
+      "dest": "/api/netlify-analytics/top-analytics.ts"
+    }
+  ]
 }

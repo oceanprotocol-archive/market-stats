@@ -2,19 +2,12 @@
 
 <h1 align="center">market-stats</h1>
 
-> Stats endpoint to deliver key numbers to market UI.
-
 [![Vercel deployment](https://flat.badgen.net/badge/vercel/auto-deployment/21c4dd?icon=now)](https://vercel.com/oceanprotocol/market)
 [![js oceanprotocol](https://img.shields.io/badge/js-oceanprotocol-7b1173.svg)](https://github.com/oceanprotocol/eslint-config-oceanprotocol)
 
-```ts
-interface MarketStatsResponse {
-  datasets: number // total number of published datasets
-  owners: number // total number of different owner accounts
-  ocean: number // total number of pooled OCEAN
-  datatoken: number // total number of pooled Datatokens
-}
-```
+Market stats provide an API encapsulating the Netlify Analytics API endpoints and give developers secure and out-of-the-box API to use directly into their markets.
+
+For a detailed explanation of how the Netlift Analytics API works, what are the different endpoints, request, and responses, and how to use them visit [netlify-analytics-api-docs](https://github.com/DimitarSD/netlify-analytics-api-docs)
 
 Deployed under https://market-stats.oceanprotocol.com
 
