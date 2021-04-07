@@ -11,8 +11,8 @@ export default async (req: VercelRequest, res: VercelResponse): Promise<void> =>
     res.setHeader('Access-Control-Allow-Methods', 'POST')
     res.setHeader('Content-Type', 'application/json;charset=utf-8')
     res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
-    
-    const {from, to, timezone, account_id, resolution} =  req.body
+
+    const {from, to, timezone, account_id, resolution} =  req.query
 
     validatePeriod(from, to, res)
     validateResolution(resolution, res)

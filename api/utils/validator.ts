@@ -1,8 +1,8 @@
 import { VercelResponse } from '@vercel/node'
 import { RESOLUTION_TYPE } from './../helpers/resolution-types'
 
-export function validatePeriod(from: number, to: number, res: VercelResponse) {
-  if (from.toString().length !== 13 || to.toString().length !== 13) {
+export function validatePeriod(from: string, to: string, res: VercelResponse) {
+  if (from.length !== 13 || to.length !== 13) {
     res.status(200).json({
       status: 'error',
       message: `Invalid value. The 'from' & 'to' values should be an UNIX timestamp represented in milliseconds`
@@ -21,8 +21,8 @@ export function validateResolution(resolution: string, res: VercelResponse) {
   }
 }
 
-export function validateLimit(limit: number, res: VercelResponse) {
-  if (limit < 0) {
+export function validateLimit(limit: string, res: VercelResponse) {
+  if (Number(limit) < 0) {
     res.status(200).json({
       status: 'error',
       message: `Invalid value. The 'limit' value can't be a negative number`
