@@ -17,7 +17,7 @@ export default async (
       'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
     )
 
-    const { from, to, timezone, account_id, resolution } = req.query
+    const { from, to, timezone, accountId, resolution } = req.query
 
     validatePeriod(from, to, res)
     validateResolution(resolution, res)
@@ -30,7 +30,7 @@ export default async (
       }
     }
 
-    const endpoint = `${apiUri}/${apiId}/bandwidth?from=${from}&to=${to}&timezone=${timezone}&account_id=${account_id}&resolution=${resolution}`
+    const endpoint = `${apiUri}/${apiId}/bandwidth?from=${from}&to=${to}&timezone=${timezone}&account_id=${accountId}&resolution=${resolution}`
     const response = await fetch(endpoint, options)
 
     if (!response || !response.ok || response.status !== 200) {
