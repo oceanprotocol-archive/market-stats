@@ -2,7 +2,7 @@
   "name": "market-stats",
   "version": "1.0.0",
   "description": "",
-  "main": "api/index.js",
+  "main": "",
   "scripts": {
     "start": "vercel dev",
     "test": "npm run lint && npm run type-check",
