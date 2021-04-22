@@ -1,6 +1,6 @@
-import fetch from 'node-fetch'
 import { VercelRequest, VercelResponse } from '@vercel/node'
 
-export default async (req: VercelRequest, res: VercelResponse): Promise<void> => {
-  
-}
+export default async (
+  req: VercelRequest,
+  res: VercelResponse
+): Promise<void> => {}

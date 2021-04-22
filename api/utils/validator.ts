@@ -7,16 +7,21 @@ export function validatePeriod(from: string, to: string, res: VercelResponse) {
       status: 'error',
       message: `Invalid value. The 'from' & 'to' values should be an UNIX timestamp represented in milliseconds`
     })
+
     return
   }
 }
 
 export function validateResolution(resolution: string, res: VercelResponse) {
-  if (resolution !== RESOLUTION_TYPE.DAY && resolution !== RESOLUTION_TYPE.RANGE) {
+  if (
+    resolution !== RESOLUTION_TYPE.DAY &&
+    resolution !== RESOLUTION_TYPE.RANGE
+  ) {
     res.status(200).json({
       status: 'error',
       message: `Invalid resolution value. The value should '${RESOLUTION_TYPE.DAY}' or '${RESOLUTION_TYPE.RANGE}'`
     })
+
     return
   }
 }
@@ -27,6 +32,7 @@ export function validateLimit(limit: string, res: VercelResponse) {
       status: 'error',
       message: `Invalid value. The 'limit' value can't be a negative number`
     })
+
     return
   }
 }

@@ -1,4 +1,4 @@
 export enum RESOLUTION_TYPE {
-    DAY = 'day',
-    RANGE = 'range'
+  DAY = 'day',
+  RANGE = 'range'
 }
